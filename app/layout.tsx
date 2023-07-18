@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} h-full`}>
       <body className="font-sf-pro-text bg-brand-bg h-full">
-        <main className="h-auto max-w-4xl xl:max-w-5xl mx-auto lg:flex items-start lg:space-x-10 xl:space-x-14 md:px-4 md:pt-14 pb-10">
+        <main className="h-screen md:h-auto max-w-4xl xl:max-w-5xl mx-auto lg:flex items-start lg:space-x-10 xl:space-x-14 md:px-4 md:pt-14 pb-10">
           <Sidebar />
           <div className="relative flex-1 bg-white md:border border-brand-gray-divider shadow-base-container md:rounded-xl overflow-hidden px-4 py-5 md:p-10">
             {children}
