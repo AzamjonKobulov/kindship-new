@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/app/components/Base';
 import { XCircleIcon } from '@heroicons/react/20/solid';
 
-const FullName = () => {
+const FullName: React.FC = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
@@ -27,14 +27,12 @@ const FullName = () => {
     }
   };
 
-  // Reset FirstName Input
   const resetFirstNameInput = () => {
     setFirstName('');
     inputRef.current?.focus();
     setDisabled(true);
   };
 
-  // Reset LastName Input
   const resetLastNameInput = () => {
     setLastName('');
     inputRef.current?.focus();
@@ -47,8 +45,10 @@ const FullName = () => {
   useEffect(() => {
     const handleResize = () => {
       const { innerHeight } = window;
-      const formBottom = inputRef.current!.getBoundingClientRect().bottom;
-      setFormOffset(innerHeight - formBottom);
+      const formBottom = inputRef.current?.getBoundingClientRect().bottom;
+      if (formBottom) {
+        setFormOffset(innerHeight - formBottom);
+      }
     };
 
     window.addEventListener('resize', handleResize);
@@ -65,7 +65,7 @@ const FullName = () => {
     <>
       <div
         className={`relative flex items-center text-body border-b space-x-2 border-brand-gray-300 ${
-          isMobile ? 'mb-20' : ''
+          isMobile ? 'mb-5' : ''
         }`}
       >
         <label htmlFor="first-name" className="flex items-center pr-2">
@@ -91,7 +91,7 @@ const FullName = () => {
       </div>
       <div
         className={`relative flex items-center text-body border-b space-x-2 border-brand-gray-300 ${
-          isMobile ? 'mb-20' : ''
+          isMobile ? 'mb-5' : ''
         }`}
       >
         <label htmlFor="last-name" className="flex items-center pr-2">
