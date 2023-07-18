@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/app/components/Base';
@@ -10,9 +10,36 @@ const FullName = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const [formOffset, setFormOffset] = useState(0);
 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleKeyboardChange = () => {
+    const viewportHeight = window.innerHeight;
+    const offset = document.activeElement!.getBoundingClientRect().top;
+
+    if (offset > viewportHeight / 2) {
+      setIsKeyboardOpen(true);
+      setFormOffset(offset - viewportHeight / 2);
+    } else {
+      setIsKeyboardOpen(false);
+      setFormOffset(0);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleKeyboardChange);
+    document.addEventListener('focusin', handleKeyboardChange);
+    document.addEventListener('focusout', handleKeyboardChange);
+
+    return () => {
+      window.removeEventListener('resize', handleKeyboardChange);
+      document.removeEventListener('focusin', handleKeyboardChange);
+      document.removeEventListener('focusout', handleKeyboardChange);
+    };
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,7 +71,10 @@ const FullName = () => {
   };
 
   return (
-    <>
+    <div
+      className="max-w-md mx-auto md:px-6 mt-8"
+      style={{ transform: `translateY(-${formOffset}px)` }}
+    >
       <div className="relative flex items-center text-body border-b space-x-2 border-brand-gray-300">
         <label htmlFor="first-name" className="flex items-center pr-2">
           First Name
@@ -98,7 +128,7 @@ const FullName = () => {
       >
         Next
       </Button>
-    </>
+    </div>
   );
 };
 
