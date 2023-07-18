@@ -24,7 +24,7 @@ const FullName = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if (name === 'first-name') {
