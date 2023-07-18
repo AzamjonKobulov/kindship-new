@@ -10,34 +10,20 @@ const FullName = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleResize = () => {
-      setKeyboardHeight(0); // Reset the keyboard height on resize
+      if (document.activeElement === inputRef.current) {
+        window.scrollTo(0, inputRef.current!.offsetTop);
+      }
     };
 
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleFocus = () => {
-      const windowHeight = window.innerHeight;
-      const inputHeight =
-        document.activeElement?.getBoundingClientRect().bottom || 0;
-      const newKeyboardHeight = windowHeight - inputHeight;
-      setKeyboardHeight(newKeyboardHeight);
-    };
-
-    window.addEventListener('focus', handleFocus);
-    return () => {
-      window.removeEventListener('focus', handleFocus);
     };
   }, []);
 
@@ -71,7 +57,7 @@ const FullName = () => {
   };
 
   return (
-    <div className="form-container" style={{ paddingBottom: keyboardHeight }}>
+    <>
       <div className="relative flex items-center text-body border-b space-x-2 border-brand-gray-300">
         <label htmlFor="first-name" className="flex items-center pr-2">
           First Name
@@ -84,6 +70,7 @@ const FullName = () => {
           value={firstName}
           onChange={handleInputChange}
           placeholder=" "
+          ref={inputRef}
         />
         <button
           type="button"
@@ -125,7 +112,7 @@ const FullName = () => {
       >
         Next
       </Button>
-    </div>
+    </>
   );
 };
 
