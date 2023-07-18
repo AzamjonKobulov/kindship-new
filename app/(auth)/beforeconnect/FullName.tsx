@@ -54,24 +54,30 @@ const FullName: React.FC = () => {
     };
 
     const handleKeyboardShow = () => {
-      setFormOffset(0); // Reset formOffset when the keyboard shows
+      const formBottom = inputRef.current?.getBoundingClientRect().bottom;
+      const keyboardHeight = window.innerHeight * 0.4; // Adjust the keyboard height as needed
+      const formOffset = formBottom ? formBottom - keyboardHeight : 0;
+      setFormOffset(formOffset);
     };
 
     const handleKeyboardHide = () => {
-      handleResize(); // Recalculate formOffset when the keyboard hides
+      setFormOffset(0);
     };
 
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', handleResize);
-      window.addEventListener('resize', handleKeyboardHide); // Listen to keyboard hide event
-      window.addEventListener('keyboardDidShow', handleKeyboardShow); // Listen to keyboard show event
+      window.addEventListener('resize', handleKeyboardHide);
+      window.addEventListener('keyboardDidShow', handleKeyboardShow);
+      window.addEventListener('keyboardDidHide', handleKeyboardHide);
 
-      handleResize(); // Initial calculation
+      handleResize();
+      handleKeyboardHide();
 
       return () => {
         window.removeEventListener('resize', handleResize);
         window.removeEventListener('resize', handleKeyboardHide);
         window.removeEventListener('keyboardDidShow', handleKeyboardShow);
+        window.removeEventListener('keyboardDidHide', handleKeyboardHide);
       };
     }
   }, []);
