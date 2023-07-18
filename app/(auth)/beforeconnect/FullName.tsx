@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { Button } from '@/app/components/Base';
 import { XCircleIcon } from '@heroicons/react/20/solid';
@@ -44,7 +45,7 @@ const FullName = () => {
   };
 
   return (
-    <div className="border">
+    <KeyboardAwareScrollView style={{ flex: 1 }}>
       <div className="relative flex items-center text-body border-b space-x-2 border-brand-gray-300">
         <label htmlFor="first-name" className="flex items-center pr-2">
           First Name
@@ -98,7 +99,7 @@ const FullName = () => {
       >
         Next
       </Button>
-    </div>
+    </KeyboardAwareScrollView>
   );
 };
 
