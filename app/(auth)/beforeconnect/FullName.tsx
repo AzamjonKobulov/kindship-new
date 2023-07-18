@@ -44,22 +44,27 @@ const FullName: React.FC = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      const { innerHeight } = window;
-      const formBottom = inputRef.current?.getBoundingClientRect().bottom;
-      if (formBottom) {
-        setFormOffset(innerHeight - formBottom);
+      if (typeof window !== 'undefined') {
+        const { innerHeight } = window;
+        const formBottom = inputRef.current?.getBoundingClientRect().bottom;
+        if (formBottom) {
+          setFormOffset(innerHeight - formBottom);
+        }
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Initial calculation
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+      handleResize(); // Initial calculation
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }
   }, []);
 
-  const isMobile: boolean = window.innerWidth <= 768;
+  const isMobile: boolean =
+    typeof window !== 'undefined' && window.innerWidth <= 768;
 
   return (
     <>
