@@ -1,20 +1,30 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/app/components/Base';
 import { XCircleIcon } from '@heroicons/react/20/solid';
 
 const FullName = () => {
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [disabled, setDisabled] = useState<boolean>(true);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [disabled, setDisabled] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   const router = useRouter();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerHeight > window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
 
     if (name === 'first-name') {
@@ -26,14 +36,12 @@ const FullName = () => {
     }
   };
 
-  // Reset FirstName Input
   const resetFirstNameInput = () => {
     setFirstName('');
     inputRef.current?.focus();
     setDisabled(true);
   };
 
-  // Reset LastName Input
   const resetLastNameInput = () => {
     setLastName('');
     inputRef.current?.focus();
@@ -45,7 +53,11 @@ const FullName = () => {
 
   return (
     <>
-      <div className="relative flex items-center text-body border-b space-x-2 border-brand-gray-300">
+      <div
+        className={`relative flex items-center text-body border-b space-x-2 border-brand-gray-300 ${
+          isMobile ? 'pb-10' : ''
+        }`}
+      >
         <label htmlFor="first-name" className="flex items-center pr-2">
           First Name
         </label>
@@ -57,6 +69,7 @@ const FullName = () => {
           value={firstName}
           onChange={handleInputChange}
           placeholder=" "
+          ref={inputRef}
         />
         <button
           type="button"
@@ -66,7 +79,11 @@ const FullName = () => {
           <XCircleIcon className="w-5 h-5 text-brand-gray-primary absolute right-0 top-1/2 -translate-y-1/2" />
         </button>
       </div>
-      <div className="relative flex items-center text-body border-b  space-x-2 border-brand-gray-300">
+      <div
+        className={`relative flex items-center text-body border-b space-x-2 border-brand-gray-300 ${
+          isMobile ? 'pb-10' : ''
+        }`}
+      >
         <label htmlFor="last-name" className="flex items-center pr-2">
           Last Name
         </label>
