@@ -51,7 +51,7 @@ const FullName = () => {
   };
 
   return (
-    <div className="fixed">
+    <div className="h-auto overflow-y-auto">
       <div className="relative flex items-center text-body border-b space-x-2 border-brand-gray-300">
         <label htmlFor="first-name" className="flex items-center pr-2">
           First Name
