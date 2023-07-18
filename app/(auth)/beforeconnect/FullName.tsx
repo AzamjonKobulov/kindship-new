@@ -10,19 +10,12 @@ const FullName = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [isTyping, setIsTyping] = useState<boolean>(false);
 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    if (value.length !== 0) {
-      setIsTyping(true);
-    } else {
-      setIsTyping(false);
-    }
 
     if (name === 'first-name') {
       const newFirstName = value.trim();
@@ -51,7 +44,7 @@ const FullName = () => {
   };
 
   return (
-    <div className="h-auto overflow-y-auto">
+    <>
       <div className="relative flex items-center text-body border-b space-x-2 border-brand-gray-300">
         <label htmlFor="first-name" className="flex items-center pr-2">
           First Name
@@ -105,7 +98,7 @@ const FullName = () => {
       >
         Next
       </Button>
-    </div>
+    </>
   );
 };
 

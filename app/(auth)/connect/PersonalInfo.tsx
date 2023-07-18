@@ -94,7 +94,7 @@ const FullName = () => {
 
   return (
     <>
-      <div className="relative flex items-center text-body border-b  space-x-2 border-brand-gray-300">
+      <div className="relative max-h-max overflow-auto flex items-center text-body border-b  space-x-2 border-brand-gray-300">
         <label htmlFor="last-name" className="flex items-center pr-2">
           Last Name
         </label>
