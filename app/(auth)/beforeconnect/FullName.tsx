@@ -20,6 +20,8 @@ const FullName = () => {
 
     if (value.length !== 0) {
       setIsTyping(true);
+    } else {
+      setIsTyping(false);
     }
 
     if (name === 'first-name') {
@@ -49,7 +51,7 @@ const FullName = () => {
   };
 
   return (
-    <div className={`${isTyping ? '-mt-40' : ''}`}>
+    <div className={`${isTyping ? '-mt-10' : ''}`}>
       <div className="relative flex items-center text-body border-b space-x-2 border-brand-gray-300">
         <label htmlFor="first-name" className="flex items-center pr-2">
           First Name
