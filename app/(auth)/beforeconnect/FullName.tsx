@@ -65,7 +65,7 @@ const FullName = () => {
     <>
       <div
         className={`relative flex items-center text-body border-b space-x-2 border-brand-gray-300 ${
-          isMobile ? 'mb-5' : ''
+          isMobile ? 'mb-20' : ''
         }`}
       >
         <label htmlFor="first-name" className="flex items-center pr-2">
@@ -91,7 +91,7 @@ const FullName = () => {
       </div>
       <div
         className={`relative flex items-center text-body border-b space-x-2 border-brand-gray-300 ${
-          isMobile ? 'mb-5' : ''
+          isMobile ? 'mb-20' : ''
         }`}
       >
         <label htmlFor="last-name" className="flex items-center pr-2">

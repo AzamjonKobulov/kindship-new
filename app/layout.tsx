@@ -30,7 +30,7 @@ export default function RootLayout({
             {children}
           </div>
         </main>
-        <footer className="w-56 md:hidden font-poppins text-sm px-4 py-7">
+        <footer className="w-56 fixed bottom-0 md:hidden font-poppins text-sm px-4 py-7">
           <p>© 2023 Kindship</p>
           <div className="flex flex-wrap items-center text-brand-gray-500 gap-x-2 gap-y-1 mt-4">
             <Link
