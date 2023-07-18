@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sf-pro-text;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-sf-pro-display;
+  }
+}
+
+button,
+input {
+  @apply focus:outline-none;
+}
+
+/* Pagination */
+
+.coaches-slider .swiper-pagination {
+  @apply !-bottom-10 !block;
+}
+
+.coaches-slider .swiper-pagination .swiper-pagination-bullet {
+  @apply w-2 h-2 bg-brand-gray-600;
+}
+
+.swiper-wrapper {
+  @apply !h-[278px] items-center;
+}
+
+.coaches-slider .swiper-slide {
+  @apply px-[18px] md:!p-0 transition-all duration-500 opacity-40;
+}
+
+.coaches-slider .swiper-slide.swiper-slide-active {
+  @apply !p-0 transition-all duration-500 !w-56 md:!w-[204px] !h-[278px] opacity-100;
+}
+
+body.keyboard {
+  height: calc(100% + 500px); /* add padding for keyboard */
+}
