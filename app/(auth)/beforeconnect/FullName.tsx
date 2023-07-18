@@ -1,22 +1,26 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/app/components/Base';
 import { XCircleIcon } from '@heroicons/react/20/solid';
 
-const FullName: React.FC = () => {
+const FullName = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [formOffset, setFormOffset] = useState<number>(0);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (value.length !== 0) {
+      setIsTyping(true);
+    }
 
     if (name === 'first-name') {
       const newFirstName = value.trim();
@@ -27,12 +31,14 @@ const FullName: React.FC = () => {
     }
   };
 
+  // Reset FirstName Input
   const resetFirstNameInput = () => {
     setFirstName('');
     inputRef.current?.focus();
     setDisabled(true);
   };
 
+  // Reset LastName Input
   const resetLastNameInput = () => {
     setLastName('');
     inputRef.current?.focus();
@@ -42,56 +48,9 @@ const FullName: React.FC = () => {
     router.push('/connect');
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (typeof window !== 'undefined') {
-        const { innerHeight } = window;
-        const formBottom = inputRef.current?.getBoundingClientRect().bottom;
-        if (formBottom) {
-          setFormOffset(innerHeight - formBottom);
-        }
-      }
-    };
-
-    const handleKeyboardShow = () => {
-      const formBottom = inputRef.current?.getBoundingClientRect().bottom;
-      const keyboardHeight = window.innerHeight * 0.4; // Adjust the keyboard height as needed
-      const formOffset = formBottom ? formBottom - keyboardHeight : 0;
-      setFormOffset(formOffset);
-    };
-
-    const handleKeyboardHide = () => {
-      setFormOffset(0);
-    };
-
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', handleResize);
-      window.addEventListener('resize', handleKeyboardHide);
-      window.addEventListener('keyboardDidShow', handleKeyboardShow);
-      window.addEventListener('keyboardDidHide', handleKeyboardHide);
-
-      handleResize();
-      handleKeyboardHide();
-
-      return () => {
-        window.removeEventListener('resize', handleResize);
-        window.removeEventListener('resize', handleKeyboardHide);
-        window.removeEventListener('keyboardDidShow', handleKeyboardShow);
-        window.removeEventListener('keyboardDidHide', handleKeyboardHide);
-      };
-    }
-  }, []);
-
-  const isMobile: boolean =
-    typeof window !== 'undefined' && window.innerWidth <= 768;
-
   return (
-    <>
-      <div
-        className={`relative flex items-center text-body border-b space-x-2 border-brand-gray-300 ${
-          isMobile ? 'mb-5' : ''
-        }`}
-      >
+    <div className={`${isTyping ? '-mt-20' : ''}`}>
+      <div className="relative flex items-center text-body border-b space-x-2 border-brand-gray-300">
         <label htmlFor="first-name" className="flex items-center pr-2">
           First Name
         </label>
@@ -103,7 +62,6 @@ const FullName: React.FC = () => {
           value={firstName}
           onChange={handleInputChange}
           placeholder=" "
-          ref={inputRef}
         />
         <button
           type="button"
@@ -113,11 +71,7 @@ const FullName: React.FC = () => {
           <XCircleIcon className="w-5 h-5 text-brand-gray-primary absolute right-0 top-1/2 -translate-y-1/2" />
         </button>
       </div>
-      <div
-        className={`relative flex items-center text-body border-b space-x-2 border-brand-gray-300 ${
-          isMobile ? 'mb-5' : ''
-        }`}
-      >
+      <div className="relative flex items-center text-body border-b  space-x-2 border-brand-gray-300">
         <label htmlFor="last-name" className="flex items-center pr-2">
           Last Name
         </label>
@@ -142,16 +96,14 @@ const FullName: React.FC = () => {
         Last name is optional
       </p>
 
-      <div style={{ marginBottom: isMobile ? `${formOffset}px` : 0 }}>
-        <Button
-          onClick={navigateNextPage}
-          disabled={disabled}
-          className="mt-5 md:mt-7"
-        >
-          Next
-        </Button>
-      </div>
-    </>
+      <Button
+        onClick={navigateNextPage}
+        disabled={disabled}
+        className="mt-5 md:mt-7"
+      >
+        Next
+      </Button>
+    </div>
   );
 };
 
