@@ -53,12 +53,25 @@ const FullName: React.FC = () => {
       }
     };
 
+    const handleKeyboardShow = () => {
+      setFormOffset(0); // Reset formOffset when the keyboard shows
+    };
+
+    const handleKeyboardHide = () => {
+      handleResize(); // Recalculate formOffset when the keyboard hides
+    };
+
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', handleResize);
+      window.addEventListener('resize', handleKeyboardHide); // Listen to keyboard hide event
+      window.addEventListener('keyboardDidShow', handleKeyboardShow); // Listen to keyboard show event
+
       handleResize(); // Initial calculation
 
       return () => {
         window.removeEventListener('resize', handleResize);
+        window.removeEventListener('resize', handleKeyboardHide);
+        window.removeEventListener('keyboardDidShow', handleKeyboardShow);
       };
     }
   }, []);
