@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/app/components/Base';
@@ -10,6 +10,7 @@ const FullName = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [formOffset, setFormOffset] = useState<number>(0);
 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,9 +44,30 @@ const FullName = () => {
     router.push('/connect');
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      const { innerHeight } = window;
+      const formBottom = inputRef.current!.getBoundingClientRect().bottom;
+      setFormOffset(innerHeight - formBottom);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial calculation
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const isMobile: boolean = window.innerWidth <= 768;
+
   return (
     <>
-      <div className="relative flex items-center text-body border-b space-x-2 border-brand-gray-300">
+      <div
+        className={`relative flex items-center text-body border-b space-x-2 border-brand-gray-300 ${
+          isMobile ? 'mb-5' : ''
+        }`}
+      >
         <label htmlFor="first-name" className="flex items-center pr-2">
           First Name
         </label>
@@ -57,6 +79,7 @@ const FullName = () => {
           value={firstName}
           onChange={handleInputChange}
           placeholder=" "
+          ref={inputRef}
         />
         <button
           type="button"
@@ -66,7 +89,11 @@ const FullName = () => {
           <XCircleIcon className="w-5 h-5 text-brand-gray-primary absolute right-0 top-1/2 -translate-y-1/2" />
         </button>
       </div>
-      <div className="relative flex items-center text-body border-b  space-x-2 border-brand-gray-300">
+      <div
+        className={`relative flex items-center text-body border-b space-x-2 border-brand-gray-300 ${
+          isMobile ? 'mb-5' : ''
+        }`}
+      >
         <label htmlFor="last-name" className="flex items-center pr-2">
           Last Name
         </label>
@@ -91,13 +118,15 @@ const FullName = () => {
         Last name is optional
       </p>
 
-      <Button
-        onClick={navigateNextPage}
-        disabled={disabled}
-        className="mt-5 md:mt-7"
-      >
-        Next
-      </Button>
+      <div style={{ marginBottom: isMobile ? `${formOffset}px` : 0 }}>
+        <Button
+          onClick={navigateNextPage}
+          disabled={disabled}
+          className="mt-5 md:mt-7"
+        >
+          Next
+        </Button>
+      </div>
     </>
   );
 };
