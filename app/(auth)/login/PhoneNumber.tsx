@@ -1,14 +1,37 @@
 'use client';
+
 import { Button } from '@/app/components/Base';
 import { XCircleIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
   const [error, setError] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleInputFocus = () => {
+      if (inputRef.current && document.activeElement === inputRef.current) {
+        scrollToRef(inputRef);
+      }
+    };
+
+    window.addEventListener('resize', handleInputFocus);
+    return () => {
+      window.removeEventListener('resize', handleInputFocus);
+    };
+  }, []);
+
+  const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
+    if (ref.current) {
+      const yOffset = 150; // You can adjust this offset based on your layout
+      const y =
+        ref.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
 
   // On Change
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {

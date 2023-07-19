@@ -18,7 +18,6 @@ const FullName = () => {
 
   useEffect(() => {
     const handleInputFocus = () => {
-      // Check if the first name or last name input is focused and scroll the page if necessary
       if (
         firstNameRef.current &&
         document.activeElement === firstNameRef.current
@@ -44,18 +43,6 @@ const FullName = () => {
       const y =
         ref.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
-
-  const handleFirstNameBlur = () => {
-    if (firstNameRef.current && !firstNameRef.current.value.trim()) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const handleLastNameBlur = () => {
-    if (lastNameRef.current && !lastNameRef.current.value.trim()) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -102,7 +89,6 @@ const FullName = () => {
           value={firstName}
           onChange={handleInputChange}
           placeholder=" "
-          onBlur={handleFirstNameBlur}
           ref={firstNameRef}
         />
         <button
@@ -125,7 +111,6 @@ const FullName = () => {
           value={lastName}
           placeholder=" "
           onChange={handleInputChange}
-          onBlur={handleLastNameBlur}
           ref={lastNameRef}
         />
         <button
