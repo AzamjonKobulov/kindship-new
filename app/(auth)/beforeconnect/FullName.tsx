@@ -59,6 +59,29 @@ const FullName = () => {
     }
   };
 
+  const handleBackButtonPress = () => {
+    // Check if any of the input fields are focused and empty
+    if (
+      (firstNameRef.current &&
+        document.activeElement === firstNameRef.current &&
+        !firstNameRef.current.value.trim()) ||
+      (lastNameRef.current &&
+        document.activeElement === lastNameRef.current &&
+        !lastNameRef.current.value.trim())
+    ) {
+      // If any input field is focused and empty, reset the scroll position to the top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    // Listen for the "popstate" event (back button press on Android)
+    window.addEventListener('popstate', handleBackButtonPress);
+    return () => {
+      window.removeEventListener('popstate', handleBackButtonPress);
+    };
+  }, []);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
