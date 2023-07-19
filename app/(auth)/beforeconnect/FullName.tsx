@@ -10,7 +10,6 @@ const FullName = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [isKeyboardVisible, setKeyboardVisible] = useState<boolean>(false);
 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
