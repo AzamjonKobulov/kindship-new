@@ -12,20 +12,39 @@ const FullName = () => {
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const router = useRouter();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (document.activeElement === inputRef.current) {
-        window.scrollTo(0, inputRef.current!.offsetTop);
+    const handleInputFocus = () => {
+      // Check if the first name or last name input is focused and scroll the page if necessary
+      if (
+        firstNameRef.current &&
+        document.activeElement === firstNameRef.current
+      ) {
+        scrollToRef(firstNameRef);
+      } else if (
+        lastNameRef.current &&
+        document.activeElement === lastNameRef.current
+      ) {
+        scrollToRef(lastNameRef);
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleInputFocus);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', handleInputFocus);
     };
   }, []);
+
+  const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
+    if (ref.current) {
+      const yOffset = -50; // You can adjust this offset based on your layout
+      const y =
+        ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
