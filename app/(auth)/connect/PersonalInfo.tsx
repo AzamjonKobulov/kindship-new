@@ -13,6 +13,7 @@ const FullName = () => {
   const [date, setDate] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [showError, setShowError] = useState(false);
+  const [yOffset, setYOffset] = useState<number>(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
@@ -22,6 +23,7 @@ const FullName = () => {
 
   useEffect(() => {
     const handleInputFocus = () => {
+      // Check if the first name or last name input is focused and scroll the page if necessary
       if (
         lastNameRef.current &&
         document.activeElement === lastNameRef.current
@@ -35,17 +37,25 @@ const FullName = () => {
       }
     };
 
+    const handleResize = () => {
+      const newInnerHeight = window.innerHeight;
+      const keyboardHeight = newInnerHeight - window.outerHeight;
+
+      setYOffset(keyboardHeight > 0 ? keyboardHeight + 16 : 0);
+    };
+
     window.addEventListener('resize', handleInputFocus);
+    window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleInputFocus);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
     if (ref.current) {
-      const yOffset = -30;
       const y =
-        ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        ref.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
