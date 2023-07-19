@@ -47,18 +47,14 @@ const FullName = () => {
     }
   };
 
-  // For the first name input
   const handleFirstNameBlur = () => {
     if (firstNameRef.current && !firstNameRef.current.value.trim()) {
-      // If the first name input loses focus and is empty, reset the scroll position
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  // For the last name input
   const handleLastNameBlur = () => {
     if (lastNameRef.current && !lastNameRef.current.value.trim()) {
-      // If the last name input loses focus and is empty, reset the scroll position
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };

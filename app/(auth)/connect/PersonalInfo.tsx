@@ -51,6 +51,18 @@ const FullName = () => {
     }
   };
 
+  const handleLastNameBlur = () => {
+    if (lastNameRef.current && !lastNameRef.current.value.trim()) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleNdisBlur = () => {
+    if (ndisRef.current && !ndisRef.current.value.trim()) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedValues = JSON.parse(
@@ -139,6 +151,7 @@ const FullName = () => {
           value={lastName}
           placeholder=" "
           onChange={onLastNameChange}
+          onBlur={handleLastNameBlur}
         />
         <button
           type="button"
@@ -177,6 +190,7 @@ const FullName = () => {
           value={number}
           placeholder=" "
           onChange={onNumberChange}
+          onBlur={handleNdisBlur}
         />
         <button
           type="button"
