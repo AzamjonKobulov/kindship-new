@@ -10,6 +10,7 @@ const FullName = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [isKeyboardVisible, setKeyboardVisible] = useState<boolean>(false);
 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -18,6 +19,7 @@ const FullName = () => {
 
   useEffect(() => {
     const handleInputFocus = () => {
+      setKeyboardVisible(true);
       // Check if the first name or last name input is focused and scroll the page if necessary
       if (
         firstNameRef.current &&
@@ -32,15 +34,21 @@ const FullName = () => {
       }
     };
 
-    window.addEventListener('resize', handleInputFocus);
+    const handleWindowResize = () => {
+      setKeyboardVisible(false);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener('focus', handleInputFocus, true);
     return () => {
-      window.removeEventListener('resize', handleInputFocus);
+      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener('focus', handleInputFocus, true);
     };
   }, []);
 
   const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
     if (ref.current) {
-      const yOffset = -30; // You can adjust this offset based on your layout
+      const yOffset = -50; // You can adjust this offset based on your layout
       const y =
         ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
