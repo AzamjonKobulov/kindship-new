@@ -14,6 +14,34 @@ const FullName = () => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    const handleInputFocus = () => {
+      if (inputRef.current && document.activeElement === inputRef.current) {
+        scrollToRef(inputRef);
+      }
+    };
+
+    window.addEventListener('resize', handleInputFocus);
+    return () => {
+      window.removeEventListener('resize', handleInputFocus);
+    };
+  }, []);
+
+  const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
+    if (ref.current) {
+      const yOffset = 100; // You can adjust this offset based on your layout
+      const y =
+        ref.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  const handleEmailBlur = () => {
+    if (inputRef.current && !inputRef.current.value.trim()) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newEmail = e.target.value;
 
@@ -60,6 +88,7 @@ const FullName = () => {
           value={email}
           placeholder="What’s your email?"
           onChange={onEmailChange}
+          onBlur={handleEmailBlur}
         />
         {email.length > 0 && (
           <button
