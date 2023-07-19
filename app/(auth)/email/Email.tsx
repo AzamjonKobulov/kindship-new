@@ -29,7 +29,7 @@ const FullName = () => {
 
   const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
     if (ref.current) {
-      const yOffset = -10; // You can adjust this offset based on your layout
+      const yOffset = -80; // You can adjust this offset based on your layout
       const y =
         ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
