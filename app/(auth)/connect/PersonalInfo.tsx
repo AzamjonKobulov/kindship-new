@@ -43,9 +43,9 @@ const FullName = () => {
 
   const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
     if (ref.current) {
-      const yOffset = -10;
+      const yOffset = 50;
       const y =
-        ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        ref.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
