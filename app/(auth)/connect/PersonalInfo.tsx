@@ -15,8 +15,41 @@ const FullName = () => {
   const [showError, setShowError] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const ndisRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleInputFocus = () => {
+      // Check if the first name or last name input is focused and scroll the page if necessary
+      if (
+        lastNameRef.current &&
+        document.activeElement === lastNameRef.current
+      ) {
+        scrollToRef(lastNameRef);
+      } else if (
+        ndisRef.current &&
+        document.activeElement === ndisRef.current
+      ) {
+        scrollToRef(ndisRef);
+      }
+    };
+
+    window.addEventListener('resize', handleInputFocus);
+    return () => {
+      window.removeEventListener('resize', handleInputFocus);
+    };
+  }, []);
+
+  const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
+    if (ref.current) {
+      const yOffset = 150; // You can adjust this offset based on your layout
+      const y =
+        ref.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -100,6 +133,7 @@ const FullName = () => {
         </label>
         <input
           id="last-name"
+          ref={lastNameRef}
           type="text"
           className="w-full flex-1 caret-[#446BF2] py-2.5 peer"
           value={lastName}
@@ -137,6 +171,7 @@ const FullName = () => {
         <input
           id="ndis-number"
           type="text"
+          ref={ndisRef}
           maxLength={9}
           className="w-full flex-1 caret-[#446BF2] py-2.5 peer"
           value={number}
