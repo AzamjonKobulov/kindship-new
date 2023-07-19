@@ -26,9 +26,9 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
 
   const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
     if (ref.current) {
-      const yOffset = 100; // You can adjust this offset based on your layout
+      const yOffset = -50; // You can adjust this offset based on your layout
       const y =
-        ref.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
+        ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
