@@ -47,6 +47,22 @@ const FullName = () => {
     }
   };
 
+  // For the first name input
+  const handleFirstNameBlur = () => {
+    if (firstNameRef.current && !firstNameRef.current.value.trim()) {
+      // If the first name input loses focus and is empty, reset the scroll position
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // For the last name input
+  const handleLastNameBlur = () => {
+    if (lastNameRef.current && !lastNameRef.current.value.trim()) {
+      // If the last name input loses focus and is empty, reset the scroll position
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -90,6 +106,7 @@ const FullName = () => {
           value={firstName}
           onChange={handleInputChange}
           placeholder=" "
+          onBlur={handleFirstNameBlur}
           ref={firstNameRef}
         />
         <button
@@ -112,6 +129,7 @@ const FullName = () => {
           value={lastName}
           placeholder=" "
           onChange={handleInputChange}
+          onBlur={handleLastNameBlur}
           ref={lastNameRef}
         />
         <button
