@@ -41,7 +41,7 @@ const FullName = () => {
       const newInnerHeight = window.innerHeight;
       const keyboardHeight = newInnerHeight - window.outerHeight;
 
-      setYOffset(keyboardHeight > 0 ? keyboardHeight + 16 : 0);
+      setYOffset(keyboardHeight > 0 ? keyboardHeight + 50 : 0);
     };
 
     window.addEventListener('resize', handleInputFocus);
