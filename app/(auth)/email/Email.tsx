@@ -84,6 +84,7 @@ const FullName = () => {
         <input
           id="email"
           type="email"
+          ref={inputRef}
           className="w-full flex-1 caret-[#446BF2] py-2.5 peer"
           value={email}
           placeholder="What’s your email?"
