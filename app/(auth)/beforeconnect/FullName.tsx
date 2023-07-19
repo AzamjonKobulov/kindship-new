@@ -76,12 +76,14 @@ const FullName = () => {
     setFirstName('');
     inputRef.current?.focus();
     setDisabled(true);
+    handleFirstNameBlur();
   };
 
   // Reset LastName Input
   const resetLastNameInput = () => {
     setLastName('');
     inputRef.current?.focus();
+    handleLastNameBlur();
   };
 
   const navigateNextPage = () => {
