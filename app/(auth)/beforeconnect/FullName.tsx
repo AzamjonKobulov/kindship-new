@@ -19,7 +19,6 @@ const FullName = () => {
 
   useEffect(() => {
     const handleInputFocus = () => {
-      setKeyboardVisible(true);
       // Check if the first name or last name input is focused and scroll the page if necessary
       if (
         firstNameRef.current &&
@@ -34,21 +33,15 @@ const FullName = () => {
       }
     };
 
-    const handleWindowResize = () => {
-      setKeyboardVisible(false);
-    };
-
-    window.addEventListener('resize', handleWindowResize);
-    window.addEventListener('focus', handleInputFocus, true);
+    window.addEventListener('resize', handleInputFocus);
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
-      window.removeEventListener('focus', handleInputFocus, true);
+      window.removeEventListener('resize', handleInputFocus);
     };
   }, []);
 
   const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
     if (ref.current) {
-      const yOffset = -50; // You can adjust this offset based on your layout
+      const yOffset = -30; // You can adjust this offset based on your layout
       const y =
         ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
