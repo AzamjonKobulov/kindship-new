@@ -8,27 +8,37 @@ import React, { useRef, useState, useEffect } from 'react';
 const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
   const [error, setError] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [yOffset, setYOffset] = useState<number>(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleInputFocus = () => {
+      // Check if the first name or last name input is focused and scroll the page if necessary
       if (inputRef.current && document.activeElement === inputRef.current) {
         scrollToRef(inputRef);
       }
     };
 
+    const handleResize = () => {
+      const newInnerHeight = window.innerHeight;
+      const keyboardHeight = newInnerHeight - window.outerHeight;
+
+      setYOffset(keyboardHeight > 0 ? keyboardHeight + 16 : 0);
+    };
+
     window.addEventListener('resize', handleInputFocus);
+    window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleInputFocus);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
     if (ref.current) {
-      const yOffset = -50; // You can adjust this offset based on your layout
       const y =
-        ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        ref.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
   };
