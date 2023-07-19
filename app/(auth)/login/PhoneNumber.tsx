@@ -33,6 +33,12 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
     }
   };
 
+  const handlephoneNumberBlur = () => {
+    if (inputRef.current && !inputRef.current.value.trim()) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   // On Change
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -96,6 +102,7 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
           placeholder="Mobile number"
           value={phoneNumber}
           onChange={onChangeInput}
+          onBlur={handlephoneNumberBlur}
         />
         {/* Remove Btn */}
         {/* {phoneNumber.length > 0 && ( */}
