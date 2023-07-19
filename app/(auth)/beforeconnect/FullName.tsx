@@ -12,6 +12,7 @@ const FullName = () => {
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
 
@@ -89,7 +90,7 @@ const FullName = () => {
           value={firstName}
           onChange={handleInputChange}
           placeholder=" "
-          ref={inputRef}
+          ref={firstNameRef}
         />
         <button
           type="button"
@@ -111,6 +112,7 @@ const FullName = () => {
           value={lastName}
           placeholder=" "
           onChange={handleInputChange}
+          ref={lastNameRef}
         />
         <button
           type="button"
