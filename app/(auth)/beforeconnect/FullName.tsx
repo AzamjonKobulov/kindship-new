@@ -7,8 +7,10 @@ import { Button } from '@/app/components/Base';
 import { XCircleIcon } from '@heroicons/react/20/solid';
 
 const FullName = () => {
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
+  const [formData, setFormData] = useState<{firstName: string, lastName: string}>({
+    firstName: '',
+    lastName: ''
+  });
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const router = useRouter();
@@ -18,31 +20,33 @@ const FullName = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    if (name === 'first-name') {
-      const newFirstName = value.trim();
-      setFirstName(newFirstName);
-      setDisabled(newFirstName === '');
-    } else if (name === 'last-name') {
-      setLastName(value);
-    }
+    setFormData({...formData, [name]: value})
   };
 
   // Reset FirstName Input
   const resetFirstNameInput = () => {
-    setFirstName('');
+    setFormData({firstName: '', lastName: formData.lastName});
     inputRef.current?.focus();
     setDisabled(true);
   };
 
   // Reset LastName Input
   const resetLastNameInput = () => {
-    setLastName('');
+    setFormData({firstName: formData.firstName, lastName: ''});
     inputRef.current?.focus();
   };
 
   const navigateNextPage = () => {
     router.push('/connect');
   };
+
+  useEffect(() => {
+    if(formData.firstName.trim() === ''){
+      setDisabled(true)
+    }else{
+      setDisabled(false)
+    }
+  }, [formData.firstName])
 
   return (
     <>
@@ -52,10 +56,10 @@ const FullName = () => {
         </label>
         <input
           id="first-name"
-          name="first-name"
+          name="firstName"
           type="text"
           className="w-full flex-1 caret-[#446BF2] py-2.5 peer"
-          value={firstName}
+          value={formData.firstName}
           onChange={handleInputChange}
           placeholder=" "
         />
@@ -73,10 +77,10 @@ const FullName = () => {
         </label>
         <input
           id="last-name"
-          name="last-name"
+          name="lastName"
           type="text"
           className="w-full flex-1 caret-[#446BF2] py-2.5 peer"
-          value={lastName}
+          value={formData.lastName}
           placeholder=" "
           onChange={handleInputChange}
         />
