@@ -8,10 +8,10 @@ const useViewport = (): RefObject<HTMLDivElement> => {
     if (mainContent.current) {
       const height = window.innerHeight.toFixed()
       const viewportHeight = window?.visualViewport?.height.toFixed()
-      const contentDistanceBottom =  mainContent.current?.parentElement.getBoundingClientRect().bottom.toFixed()
+      const contentDistanceBottom =  height - mainContent.current?.parentElement.getBoundingClientRect().bottom.toFixed()
       const y =  (height - viewportHeight) - contentDistanceBottom;
 
-      y > 0 ? window.scrollTo({ top: y, behavior: 'smooth' }) : null
+      window.scrollTo({ top: y, behavior: 'smooth' })
     }
   };
 
