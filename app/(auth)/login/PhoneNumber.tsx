@@ -12,26 +12,39 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
   useEffect(() => {
-    const handleInputFocus = () => {
-      // Scroll the input into view when it receives focus
-      if (inputRef.current) {
-        inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+    const handleResize = () => {
+      // Check if the window height changed (keyboard opened/closed)
+      const windowHeight = window.innerHeight;
+      const bodyHeight = document.body.clientHeight;
+      setKeyboardOpen(bodyHeight < windowHeight);
     };
 
-    // Add event listener for input focus
-    if (inputRef.current) {
-      inputRef.current.addEventListener('focus', handleInputFocus);
-    }
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
 
     // Clean up the event listener on component unmount
     return () => {
-      if (inputRef.current) {
-        inputRef.current.removeEventListener('focus', handleInputFocus);
-      }
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    // Adjust the input position when the keyboard opens/closes
+    if (keyboardOpen) {
+      // Calculate the distance between the input and the top of the viewport
+      const inputTopOffset = document.getElementById('phone-number')?.getBoundingClientRect().top || 0;
+      // Calculate the height of the virtual keyboard
+      const keyboardHeight = window.innerHeight - inputTopOffset;
+      // Apply the keyboard height as padding to the top of the body
+      document.body.style.paddingTop = `${keyboardHeight}px`;
+    } else {
+      // Reset the body's padding when the keyboard is closed
+      document.body.style.paddingTop = '0';
+    }
+  }, [keyboardOpen]);
 
   // useEffect(() => {
   //   const handleInputFocus = () => {
