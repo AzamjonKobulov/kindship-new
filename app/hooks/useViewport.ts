@@ -6,11 +6,12 @@ const useViewport = (): RefObject<HTMLDivElement> => {
 
   const updateViewport = () => {
     if (mainContent.current) {
-      const y =
-        (window.innerHeight.toFixed() -
-          (window?.visualViewport?.height || 0).toFixed()) -
-        mainContent.current?.getBoundingClientRect().bottom.toFixed();
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      const height = window.innerHeight.toFixed()
+      const viewportHeight = window?.visualViewport?.height.toFixed()
+      const contentDistanceBottom =  mainContent.current?.parentElement.getBoundingClientRect().bottom.toFixed()
+      const y =  (height - viewportHeight) - contentDistanceBottom;
+
+      y > 0 ? window.scrollTo({ top: y, behavior: 'smooth' }) : null
     }
   };
 

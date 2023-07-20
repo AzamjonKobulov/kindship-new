@@ -10,47 +10,10 @@ const FullName = () => {
   const [email, setEmail] = useState('');
   const [validEmail, setValidEmail] = useState(false);
   const [isTyping, setIsTyping] = useState(true);
-  const [yOffset, setYOffset] = useState<number>(0);
 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const handleInputFocus = () => {
-      // Check if the first name or last name input is focused and scroll the page if necessary
-      if (inputRef.current && document.activeElement === inputRef.current) {
-        scrollToRef(inputRef);
-      }
-    };
-
-    const handleResize = () => {
-      const newInnerHeight = window.innerHeight;
-      const keyboardHeight = newInnerHeight - window.outerHeight;
-
-      setYOffset(keyboardHeight > 0 ? keyboardHeight + 16 : 0);
-    };
-
-    window.addEventListener('resize', handleInputFocus);
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleInputFocus);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
-    if (ref.current) {
-      const y =
-        ref.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
-
-  const handleEmailBlur = () => {
-    if (inputRef.current && !inputRef.current.value.trim()) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
 
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newEmail = e.target.value;
@@ -94,12 +57,10 @@ const FullName = () => {
         <input
           id="email"
           type="email"
-          ref={inputRef}
           className="w-full flex-1 caret-[#446BF2] py-2.5 peer"
           value={email}
           placeholder="What’s your email?"
           onChange={onEmailChange}
-          onBlur={handleEmailBlur}
         />
         {email.length > 0 && (
           <button

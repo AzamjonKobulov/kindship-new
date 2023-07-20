@@ -3,7 +3,7 @@
 import { Button } from '@/app/components/Base';
 import { XCircleIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 
 const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
   const [error, setError] = useState<boolean>(false);

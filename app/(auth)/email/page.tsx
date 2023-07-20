@@ -1,12 +1,14 @@
+'use client';
 import Link from 'next/link';
-
 import { Arrowleft } from '@/app/components/Icons';
 import Email from '@/app/(auth)/email/Email';
+import useViewport from '@/app/hooks/useViewport';
 
 const Connect = () => {
+  const mainContentRef = useViewport();
   return (
     <>
-      <div className="md:text-center">
+      <div ref={mainContentRef} className="md:text-center">
         <Link
           href="/connect"
           className="inline-flex lg:hidden items-center text-brand-primary space-x-1.5"
