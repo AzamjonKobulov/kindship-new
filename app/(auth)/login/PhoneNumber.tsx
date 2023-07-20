@@ -12,62 +12,28 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [keyboardOpen, setKeyboardOpen] = useState(false);
-
   useEffect(() => {
-    const handleResize = () => {
-      // Check if the window height changed (keyboard opened/closed)
-      const windowHeight = window.innerHeight;
-      const bodyHeight = document.body.clientHeight;
-      setKeyboardOpen(bodyHeight < windowHeight);
+    const handleInputFocus = () => {
+      // Check if the first name or last name input is focused and scroll the page if necessary
+      if (inputRef.current && document.activeElement === inputRef.current) {
+        scrollToRef(inputRef);
+      }
     };
 
-    // Add event listener for window resize
-    window.addEventListener('resize', handleResize);
+    const handleResize = () => {
+      const newInnerHeight = window.innerHeight;
+      const keyboardHeight = newInnerHeight - window.outerHeight;
 
-    // Clean up the event listener on component unmount
+      setYOffset(keyboardHeight > 0 ? keyboardHeight + 16 : 0);
+    };
+
+    window.addEventListener('resize', handleInputFocus);
+    window.addEventListener('resize', handleResize);
     return () => {
+      window.removeEventListener('resize', handleInputFocus);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-  useEffect(() => {
-    // Adjust the input position when the keyboard opens/closes
-    if (keyboardOpen) {
-      // Calculate the distance between the input and the top of the viewport
-      const inputTopOffset = document.getElementById('phone-number')?.getBoundingClientRect().top || 0;
-      // Calculate the height of the virtual keyboard
-      const keyboardHeight = window.innerHeight - inputTopOffset;
-      // Apply the keyboard height as padding to the top of the body
-      document.body.style.paddingTop = `${keyboardHeight}px`;
-    } else {
-      // Reset the body's padding when the keyboard is closed
-      document.body.style.paddingTop = '0';
-    }
-  }, [keyboardOpen]);
-
-  // useEffect(() => {
-  //   const handleInputFocus = () => {
-  //     // Check if the first name or last name input is focused and scroll the page if necessary
-  //     if (inputRef.current && document.activeElement === inputRef.current) {
-  //       scrollToRef(inputRef);
-  //     }
-  //   };
-
-  //   const handleResize = () => {
-  //     const newInnerHeight = window.innerHeight;
-  //     const keyboardHeight = newInnerHeight - window.outerHeight;
-
-  //     setYOffset(keyboardHeight > 0 ? keyboardHeight + 16 : 0);
-  //   };
-
-  //   window.addEventListener('resize', handleInputFocus);
-  //   window.addEventListener('resize', handleResize);
-  //   return () => {
-  //     window.removeEventListener('resize', handleInputFocus);
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
 
   const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
     if (ref.current) {
