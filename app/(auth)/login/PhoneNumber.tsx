@@ -10,31 +10,37 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
   const [disabled, setDisabled] = useState<boolean>(true);
   const [yOffset, setYOffset] = useState<number>(0);
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [isKeyboardOpen, setKeyboardOpen] = useState(false);
 
   useEffect(() => {
-    const handleInputFocus = () => {
-      // Check if the first name or last name input is focused and scroll the page if necessary
-      if (inputRef.current && document.activeElement === inputRef.current) {
-        scrollToRef(inputRef);
-      }
-    };
-
     const handleResize = () => {
-      const newInnerHeight = window.innerHeight;
-      const keyboardHeight = newInnerHeight - window.outerHeight;
-
-      setYOffset(keyboardHeight > 0 ? keyboardHeight + 16 : 0);
+      const windowHeight = window.innerHeight;
+      const bodyHeight = document.body.clientHeight;
+      setKeyboardOpen(bodyHeight < windowHeight);
     };
 
-    window.addEventListener('resize', handleInputFocus);
+    // Add event listeners for window resize and keyboard open
     window.addEventListener('resize', handleResize);
+    window.addEventListener('keyboardWillShow', handleResize); // Change to the appropriate event for your target platform
+
+    // Clean up the event listeners on component unmount
     return () => {
-      window.removeEventListener('resize', handleInputFocus);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('keyboardWillShow', handleResize);
     };
   }, []);
 
+  const handleInputFocus = () => {
+    if (isKeyboardOpen) {
+      // Scroll to the input element when the keyboard is already open
+      const inputElement = document.getElementById('myInput');
+      if (inputElement) {
+        inputElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+
+  
   const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
     if (ref.current) {
       const y =
@@ -104,7 +110,7 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
         </label>
         {/* Input */}
         <input
-          ref={inputRef}
+          onFocus={handleInputFocus}
           id="phone-number"
           type="text"
           maxLength={10}
