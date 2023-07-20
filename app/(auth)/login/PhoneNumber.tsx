@@ -12,6 +12,27 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    const handleInputFocus = () => {
+      // Scroll the input into view when it receives focus
+      if (inputRef.current) {
+        inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    };
+
+    // Add event listener for input focus
+    if (inputRef.current) {
+      inputRef.current.addEventListener('focus', handleInputFocus);
+    }
+
+    // Clean up the event listener on component unmount
+    return () => {
+      if (inputRef.current) {
+        inputRef.current.removeEventListener('focus', handleInputFocus);
+      }
+    };
+  }, []);
+
   // useEffect(() => {
   //   const handleInputFocus = () => {
   //     // Check if the first name or last name input is focused and scroll the page if necessary
