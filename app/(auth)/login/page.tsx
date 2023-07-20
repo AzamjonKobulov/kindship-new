@@ -14,7 +14,7 @@ const Login = () => {
 
   return (
     <>
-      <div ref={mainContentRef} className="md:text-center">
+      <div  className="md:text-center">
         <Link
           href="/"
           className="inline-flex lg:hidden items-center text-brand-primary space-x-1.5"
