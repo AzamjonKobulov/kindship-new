@@ -2,17 +2,19 @@
 import Link from 'next/link';
 import { Arrowleft } from '@/app/components/Icons';
 import PhoneNumber from './PhoneNumber';
-import { CheckIcon, XCircleIcon } from '@heroicons/react/20/solid';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import VerfyNumber from './VerfyNumber';
+import useViewport from '@/app/hooks/useViewport';
 
 const Login = () => {
   const [verify, setVerify] = useState<boolean>(false);
   const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const mainContentRef = useViewport();
+
 
   return (
     <>
-      <div className="md:text-center">
+      <div ref={mainContentRef} className="md:text-center">
         <Link
           href="/"
           className="inline-flex lg:hidden items-center text-brand-primary space-x-1.5"
