@@ -10,6 +10,8 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
   const [disabled, setDisabled] = useState<boolean>(true);
   const [yOffset, setYOffset] = useState<number>(0);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [isKeyboardOpen, setKeyboardOpen] = useState(false);
 
   useEffect(() => {
@@ -38,9 +40,8 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
         inputElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
-  };
+  }
 
-  
   const scrollToRef = (ref: React.RefObject<HTMLInputElement>) => {
     if (ref.current) {
       const y =
@@ -110,6 +111,7 @@ const PhoneNumber = ({ phoneNumber, setPhoneNumber, setVerify }: any) => {
         </label>
         {/* Input */}
         <input
+          ref={inputRef}
           onFocus={handleInputFocus}
           id="phone-number"
           type="text"
